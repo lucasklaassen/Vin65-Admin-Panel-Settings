@@ -1,0 +1,42 @@
+{
+  "name": "DesignerLaunch/WebsiteSettings",
+  "version": "0.2",
+  "manifest_version": 2,
+  "description": "A sidebar for the Vin65 admin panel to make editing websites even easier.",
+  	  
+
+ "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "css": ["css/screen.css", "css/animate.css"],
+      "js": ["js/jquery.js", "js/jquery-ui.js","js/preload.js"],
+      "run_at": "document_start",
+      "all_frames": true
+    },
+    {
+      "matches": ["<all_urls>"],
+      "js": ["js/scripts.js"],
+      "all_frames": true
+    }
+  ],
+
+  "background": {
+    "scripts": ["js/jquery.js", "js/jquery-ui.js", "js/background.js"]
+  },
+
+"web_accessible_resources": [
+    "images/sidebarGraidient.png",
+    "images/sidebar.png",
+    "images/logo.png",
+    "images/arrow.png",
+    "images/navigation.png",
+    "html/sidebar.html",
+    "fonts/iconsweets-webfont.svg"
+  ],
+
+  "permissions": [
+    "cookies",
+    "<all_urls>",
+    "tabs"
+  ]
+}
