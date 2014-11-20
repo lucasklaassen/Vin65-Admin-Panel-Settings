@@ -5,6 +5,22 @@
     font-style: normal;
 }
 
+.popupWrapper{
+	background:#fff;
+	background-image: -webkit-linear-gradient(top, #fcfcfc, #cfcfd0);
+	background-origin: padding-box;
+	background-size: auto;
+	border-radius: 5px;
+	box-shadow: white 0 -1px 0 inset, rgba(0, 0, 0, 0.88) 0 1px 140px;
+	color: #333;
+	left:50%;
+	position: absolute;
+	text-shadow: white 0 1px 0;
+	margin:10% 0 0 -250px;
+	padding:10px;			
+	z-index: 9999999;
+}
+
 .v65wb-submitthis input {
 	cursor: pointer;
   cursor: hand;
@@ -162,22 +178,6 @@
 		width:100%;
 		z-index: 99999;
 	}
-
-		.v65wb-modal{
-			background:#fff;
-			background-image: -webkit-linear-gradient(top, #fcfcfc, #cfcfd0);
-			background-origin: padding-box;
-			background-size: auto;
-			border-radius: 5px;
-			box-shadow: white 0 -1px 0 inset, rgba(0, 0, 0, 0.88) 0 1px 140px;
-			color: #333;
-			left:50%;
-			position: absolute;
-			text-shadow: white 0 1px 0;
-			margin:10% 0 0 -250px;
-			padding:10px;			
-			z-index: 9999999;
-		}
 
 	.v65wb-siteLinks{
 		bottom:0;
