@@ -5,13 +5,44 @@ var v65ws = {
 
 	//global functions
 	initTopBarLinks: function(){
-		var customLinks = '<li><a class="v65ws-designerLaunch" v65wsjs="modalWindow" v65wsjsModalHeight="550px" v65wsjsModalWidth="700px" href="/index.cfm?method=layout.showLayout&go=%2Fsettings%2Findex%2Ecfm%3Fmethod%3Dsettings%2Eframes%26deepLink%3DdesignerLaunch">Designer Launch</a></li><li><a class="v65ws-websiteSettings" v65wsjs="modalWindow" v65wsjsModalHeight="550px" v65wsjsModalWidth="700px" href="/index.cfm?method=layout.showLayout&go=%2Fsettings%2Findex%2Ecfm%3Fmethod%3Dsettings%2Eframes%26deepLink%3DwebsiteSettings">Website Settings</a></li>';
+		var customLinks = '<li><a class="v65ws-designerLaunch" v65wsjs="modalWindow" v65wsjsModalHeight="550px" v65wsjsModalWidth="700px" href="/index.cfm?method=layout.showLayout&go=%2Fsettings%2Findex%2Ecfm%3Fmethod%3Dsettings%2Eframes%26deepLink%3DdesignerLaunch">Designer Launch</a></li><li><a class="v65ws-websiteSettings" v65wsjs="modalWindow" v65wsjsModalHeight="550px" v65wsjsModalWidth="700px" href="/index.cfm?method=layout.showLayout&go=%2Fsettings%2Findex%2Ecfm%3Fmethod%3Dsettings%2Eframes%26deepLink%3DwebsiteSettings">Website Settings</a></li>',
+				templateArray = ["skambee", "dynavee"],
+				templateContentGroups = {
+					skambee : {
+						homeFeatureImage : ".homeFeatureImage",
+						pageFeatureImage : ".pageFeatureImage",
+						socialIcons : ".socialIcons"
+					},
+					dynavee : {
+						aboutUs : ".aboutUs",
+						ourWines : ".ourWines",
+						socialIcons : ".socialIcons"
+					}
+				},
+				templateContentBlocks = {
+					skambee : {
+						// homeFeatureImage : ".homeFeatureImage",
+						// pageFeatureImage : ".pageFeatureImage",
+						facebook : ".facebook",
+						twitter : ".twitter",
+						pinterest : ".pinterest"
+					},
+					dynavee : {
+
+					}
+				};
 		$(".v65-nav-global .container .pull-left .nav").append(customLinks);
 		if( location.search === "?method=contentGroups.list" || location.search === "?method=contentGroups.list&TITLE=&&page=1") {
 			$(".v65-nav-global .container .pull-left .nav").append('<li><a v65wsjs="contentGroupSetup" href="#">Content Group Setup</a></li>');
 			$("[v65wsjs=contentGroupSetup]").click(function(e){
 				e.preventDefault();
-				v65ws.initContentGroupSetup();
+				v65ws.initContentGroupSetup(templateArray, templateContentGroups);
+			});
+		} else if( location.search === "?method=contentBlocks.list" || location.search === "?method=contentBlocks.list&&page=1" || location.search === "?method=contentBlocks.list&CONTENTGROUPID=&ISACTIVE=&TITLE=&&page=1" ) {
+			$(".v65-nav-global .container .pull-left .nav").append('<li><a v65wsjs="contentBlockInput" href="#">Content Block Input</a></li>');
+			$("[v65wsjs=contentBlockInput]").click(function(e){
+				e.preventDefault();
+				v65ws.initContentBlockInput(templateArray, templateContentBlocks);
 			});
 		}
 		$("html").prepend("<div style='overflow:visible!important;' class='v65ws' />");
@@ -76,9 +107,7 @@ var v65ws = {
 		});
 		return false;
 	},
-	initContentGroupSetup : function() {
-		// Input frontend here
-		var templateArray = ["skambee", "dynavee"];
+	initContentGroupSetup : function(templateArray, templateContentGroups) {
 		$('html').prepend('<div class="v65ContentGroupSection"><h3>Which template are you using?</h3><select name="v65templateSelector"></select><a class="" v65wsjs="templateSelectSubmit" href="#">Submit</a></div>');
 		for(var i = 0; i < templateArray.length; i++) {
 			$("[name='v65templateSelector']")
@@ -88,7 +117,20 @@ var v65ws = {
 		}
 		$('[v65wsjs="templateSelectSubmit"]').click(function(){
 			var template = $("[name='v65templateSelector']").val();
-			contentGroupAutomation.init.elements(template);
+			contentGroupAutomation.init.elements(template, templateContentGroups);
+		});
+	},
+	initContentBlockInput : function(templateArray, templateContentBlocks) {
+		$('html').prepend('<div class="v65ContentGroupSection"><h3>Which template are you using?</h3><select name="v65templateSelector"></select><a class="" v65wsjs="templateSelectSubmit" href="#">Submit</a></div>');
+		for(var i = 0; i < templateArray.length; i++) {
+			$("[name='v65templateSelector']")
+	    	.append($("<option></option>")
+      	.attr("value",templateArray[i])
+      	.text(templateArray[i]));
+		}
+		$('[v65wsjs="templateSelectSubmit"]').click(function(){
+			var template = $("[name='v65templateSelector']").val();
+			contentBlockInput.init.elements(template, templateContentBlocks);
 		});
 	}
 };
@@ -99,21 +141,9 @@ if(document.location == top.location && top.location.hostname.indexOf("siteadmin
 
 var contentGroupAutomation = {
 	init : {
-		elements : function(template){
-				$('body').not('.homeFeatureImage, .pageFeatureImage, .socialIcons').html('<div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">Starting...</div></div>');
+		elements : function(template, templateContentGroups){
+				$('body').html('<div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">Starting...</div></div>');
 				$('.progress-bar').css('width', '10%');
-				var templateContentGroups = {
-					skambee : {
-						homeFeatureImage : ".homeFeatureImage",
-						pageFeatureImage : ".pageFeatureImage",
-						socialIcons : ".socialIcons"
-					},
-					dynavee : {
-						aboutUs : ".aboutUs",
-						ourWines : ".ourWines",
-						socialIcons : ".socialIcons"
-					}
-				}
 				if( template === "skambee" ) {
 					for (var key in templateContentGroups.skambee) {
 						var obj = templateContentGroups.skambee;
@@ -332,6 +362,87 @@ var contentGroupAutomation = {
 		},
 		completeMessage : function(contentGroupName, template) {
 			var className = contentGroupName.replace(/\./g, "");
+			$( '<h2>'+className+' is complete</h2><button class="btn-warning" onclick="location.reload();">Click here to stop</button><br/>' ).insertAfter( ".progress" );
+		}
+	}
+};
+
+var contentBlockInput = {
+	init : {
+		elements : function(template, templateContentBlocks){
+			$('body').html('<div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">Starting...</div></div>');
+			$('.progress-bar').css('width', '10%');
+			if( template === "skambee" ) {
+				for (var key in templateContentBlocks.skambee) {
+					var obj = templateContentBlocks.skambee;
+					contentBlockInput.automation.init(obj[key], template, 10);
+				}
+			} else if( template === "dynavee" ) {
+				for (var key in templateContentBlocks.dynavee) {
+					var obj = templateContentBlocks.dynavee;
+					contentBlockInput.automation.init(obj[key], template, 10);
+				}
+			}
+		}
+	},
+	automation : {
+		init : function(contentBlockName, template, progress) {
+			var className = contentBlockName.replace(/\./g, "");
+			$('html').prepend('<iframe src="/2014/cms/index.cfm?method=contentBlocks.add" class="'+ className +'"></iframe>');
+			// For testing purposes
+			// $(contentBlockName).css('width', '1000px');
+			// $(contentBlockName).css('height', '1000px');
+			setTimeout(function() {
+				contentBlockInput.automation.addTitle(contentBlockName, template, progress + 10);
+				$('.progress-bar').css("width", progress + '%');
+				$('.progress-bar').text(progress + "%");
+			}, 3000);
+		},
+		addTitle : function(contentBlockName, template, progress) {
+			if( contentBlockName === ".facebook" || contentBlockName === ".twitter" || contentBlockName === ".pinterest" ) {
+				$(contentBlockName).contents().find('select[name="contentGroupID"]').children().each(function(){
+					if($(this).text() === "Social Icons") {
+						$(contentBlockName).contents().find('select[name="contentGroupID"]').val($(this).val());
+					}
+				});
+				$(contentBlockName).contents().find('input[name="isActive"]').trigger('click');
+				$(contentBlockName).contents().find('input[name="title"]').val(contentBlockName.replace(/\./g, ""));
+			}
+			$(contentBlockName).contents().find("button[v65js='submitEdit']").trigger('click');
+			setTimeout(function() {
+				if( contentBlockName === ".facebook" || contentBlockName === ".twitter" || contentBlockName === ".pinterest" ){
+					contentBlockInput.automation.initEditElements(contentBlockName, template, progress + 10);
+				}
+				$('.progress-bar').css("width", progress + '%');
+				$('.progress-bar').text(progress + "%");
+			}, 3000);
+		},
+		initEditElements : function(contentBlockName, template, progress) {
+			if( contentBlockName === ".facebook" || contentBlockName === ".twitter" || contentBlockName === ".pinterest" ) {
+				$(contentBlockName).contents().find("[v65js='edit']:eq(1)").trigger('click');
+			}
+			setTimeout(function() {
+				contentBlockInput.automation.editElementsContent(contentBlockName, template, progress + 10);
+				$('.progress-bar').css("width", progress + '%');
+				$('.progress-bar').text(progress + "%");
+			}, 3000);
+		},
+		editElementsContent : function(contentBlockName, template, progress) {
+			$(contentBlockName).contents().find("select[name='element1']").children().each(function(){
+				if($(this).text() === contentBlockName.replace(/\./g, "")) {
+					$(contentBlockName).contents().find("select[name='element1']").val($(this).val());
+				}
+			});
+			$(contentBlockName).contents().find("input[name='element3']").val("#");
+			$(contentBlockName).contents().find('[v65js="submitEdit"]').trigger('click');
+			setTimeout(function() {
+				contentBlockInput.automation.completeMessage(contentBlockName, template);
+				$('.progress-bar').css('width', progress + '%');
+				$('.progress-bar').text(progress + '%');
+			}, 3000);
+		},
+		completeMessage : function(contentBlockName, template) {
+			var className = contentBlockName.replace(/\./g, "");
 			$( '<h2>'+className+' is complete</h2><button class="btn-warning" onclick="location.reload();">Click here to stop</button><br/>' ).insertAfter( ".progress" );
 		}
 	}
