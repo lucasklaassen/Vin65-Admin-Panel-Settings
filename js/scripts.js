@@ -16,19 +16,23 @@ var v65ws = {
 					dynavee : {
 						aboutUs : ".aboutUs",
 						ourWines : ".ourWines",
-						socialIcons : ".socialIcons"
+						socialIcons : ".socialIcons",
+						events : ".events"
 					}
 				},
 				templateContentBlocks = {
 					skambee : {
-						// homeFeatureImage : ".homeFeatureImage",
-						// pageFeatureImage : ".pageFeatureImage",
+						homeFeatureImage : ".homeFeatureImage",
+						pageFeatureImage : ".pageFeatureImage",
 						facebook : ".facebook",
 						twitter : ".twitter",
 						pinterest : ".pinterest"
 					},
 					dynavee : {
-
+						aboutUs : ".About_Us",
+						event1 : ".Event_1",
+						event2 : ".Event_2",
+						ourWines : ".Our_Wines"
 					}
 				};
 		$(".v65-nav-global .container .pull-left .nav").append(customLinks);
@@ -109,6 +113,7 @@ var v65ws = {
 	},
 	initContentGroupSetup : function(templateArray, templateContentGroups) {
 		$('html').prepend('<div class="v65ContentGroupSection"><h3>Which template are you using?</h3><select name="v65templateSelector"></select><a class="" v65wsjs="templateSelectSubmit" href="#">Submit</a></div>');
+		$(".v65ContentGroupSection").dialog();
 		for(var i = 0; i < templateArray.length; i++) {
 			$("[name='v65templateSelector']")
 	    	.append($("<option></option>")
@@ -122,6 +127,7 @@ var v65ws = {
 	},
 	initContentBlockInput : function(templateArray, templateContentBlocks) {
 		$('html').prepend('<div class="v65ContentGroupSection"><h3>Which template are you using?</h3><select name="v65templateSelector"></select><a class="" v65wsjs="templateSelectSubmit" href="#">Submit</a></div>');
+		$( ".v65ContentGroupSection" ).dialog();
 		for(var i = 0; i < templateArray.length; i++) {
 			$("[name='v65templateSelector']")
 	    	.append($("<option></option>")
@@ -405,22 +411,48 @@ var contentBlockInput = {
 						$(contentBlockName).contents().find('select[name="contentGroupID"]').val($(this).val());
 					}
 				});
-				$(contentBlockName).contents().find('input[name="isActive"]').trigger('click');
-				$(contentBlockName).contents().find('input[name="title"]').val(contentBlockName.replace(/\./g, ""));
+			} else if( contentBlockName === ".About_Us" ) {
+				$(contentBlockName).contents().find('select[name="contentGroupID"]').children().each(function(){
+					if($(this).text() === "About Us") {
+						$(contentBlockName).contents().find('select[name="contentGroupID"]').val($(this).val());
+					}
+				});
+			} else if( contentBlockName === ".Event_1" || contentBlockName === ".Event_2" ) {
+				$(contentBlockName).contents().find('select[name="contentGroupID"]').children().each(function(){
+					if($(this).text() === "Events") {
+						$(contentBlockName).contents().find('select[name="contentGroupID"]').val($(this).val());
+					}
+				});
+			} else if( contentBlockName === ".Our_Wines" ) {
+				$(contentBlockName).contents().find('select[name="contentGroupID"]').children().each(function(){
+					if($(this).text() === "Our Wines") {
+						$(contentBlockName).contents().find('select[name="contentGroupID"]').val($(this).val());
+					}
+				});
+			} else if( contentBlockName === ".homeFeatureImage" ) {
+				$(contentBlockName).contents().find('select[name="contentGroupID"]').children().each(function(){
+					if($(this).text() === "Homepage Feature Image") {
+						$(contentBlockName).contents().find('select[name="contentGroupID"]').val($(this).val());
+					}
+				});
+			} else if( contentBlockName === ".pageFeatureImage" ) {
+				$(contentBlockName).contents().find('select[name="contentGroupID"]').children().each(function(){
+					if($(this).text() === "Page Feature Image") {
+						$(contentBlockName).contents().find('select[name="contentGroupID"]').val($(this).val());
+					}
+				});
 			}
+			$(contentBlockName).contents().find('input[name="isActive"]').trigger('click');
+			$(contentBlockName).contents().find('input[name="title"]').val(contentBlockName.replace(/\./g, "").replace(/_/g, ' '));
 			$(contentBlockName).contents().find("button[v65js='submitEdit']").trigger('click');
 			setTimeout(function() {
-				if( contentBlockName === ".facebook" || contentBlockName === ".twitter" || contentBlockName === ".pinterest" ){
-					contentBlockInput.automation.initEditElements(contentBlockName, template, progress + 10);
-				}
+				contentBlockInput.automation.initEditElements(contentBlockName, template, progress + 10);
 				$('.progress-bar').css("width", progress + '%');
 				$('.progress-bar').text(progress + "%");
 			}, 3000);
 		},
 		initEditElements : function(contentBlockName, template, progress) {
-			if( contentBlockName === ".facebook" || contentBlockName === ".twitter" || contentBlockName === ".pinterest" ) {
-				$(contentBlockName).contents().find("[v65js='edit']:eq(1)").trigger('click');
-			}
+			$(contentBlockName).contents().find("[v65js='edit']:eq(1)").trigger('click');
 			setTimeout(function() {
 				contentBlockInput.automation.editElementsContent(contentBlockName, template, progress + 10);
 				$('.progress-bar').css("width", progress + '%');
@@ -428,22 +460,74 @@ var contentBlockInput = {
 			}, 3000);
 		},
 		editElementsContent : function(contentBlockName, template, progress) {
-			$(contentBlockName).contents().find("select[name='element1']").children().each(function(){
-				if($(this).text() === contentBlockName.replace(/\./g, "")) {
-					$(contentBlockName).contents().find("select[name='element1']").val($(this).val());
-				}
-			});
-			$(contentBlockName).contents().find("input[name='element3']").val("#");
+			if( contentBlockName === ".facebook" || contentBlockName === ".twitter" || contentBlockName === ".pinterest" ) {
+				$(contentBlockName).contents().find("select[name='element1']").children().each(function(){
+					if($(this).text() === contentBlockName.replace(/\./g, "")) {
+						$(contentBlockName).contents().find("select[name='element1']").val($(this).val());
+					}
+				});
+				$(contentBlockName).contents().find("input[name='element3']").val("#");
+			} else if( contentBlockName === ".About_Us" ) {
+				$(contentBlockName).contents().find("input[name='element1']").val("About Us");
+				$(contentBlockName).contents().find("textarea[name='element2']").val("This is a teaser for the about us pod. Elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum. Typi non habent claritatem insitam.");
+				$(contentBlockName).contents().find("input[name='element3']").val("/About-Us");
+				var className = contentBlockName.replace(/\./g, "");
+				$(contentBlockName).contents().find('[v65js="uploadFormArea"]').after('<a class="downloadMessage" href="https://dynavee.vin65.com/assets/images/contentblock/photos/cellar.jpg" download="'+className+'.jpg">'+className+' is almost complete... Click here to download the banner image, then upload it.</a>')
+				$(contentBlockName).css('width', '1000px');
+				$(contentBlockName).css('height', '1000px');
+			} else if( contentBlockName === ".Event_1" ) {
+				$(contentBlockName).contents().find("input[name='element1']").val("May");
+				$(contentBlockName).contents().find("input[name='element2']").val("23rd");
+				$(contentBlockName).contents().find("input[name='element3']").val("2013");
+				$(contentBlockName).contents().find("input[name='element4']").val("Lorum Ipsum Wine Tasting");
+				$(contentBlockName).contents().find("input[name='element5']").val("At the tasting house");
+				$(contentBlockName).contents().find("input[name='element6']").val("2:00pm - 3:00pm");
+				$(contentBlockName).contents().find("textarea[name='element7']").val("Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.");
+				$(contentBlockName).contents().find("input[name='element8']").val("/About-Us/Events");
+			} else if( contentBlockName === ".Event_2" ) {
+				$(contentBlockName).contents().find("input[name='element1']").val("June");
+				$(contentBlockName).contents().find("input[name='element2']").val("15th");
+				$(contentBlockName).contents().find("input[name='element3']").val("2013");
+				$(contentBlockName).contents().find("input[name='element4']").val("Dolor sai vie");
+				$(contentBlockName).contents().find("input[name='element5']").val("At the Wine Cellar");
+				$(contentBlockName).contents().find("input[name='element6']").val("5:00pm - 12:00am");
+				$(contentBlockName).contents().find("textarea[name='element7']").val("Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.");
+				$(contentBlockName).contents().find("input[name='element8']").val("/About-Us/Events");
+			} else if( contentBlockName === ".Our_Wines" ) {
+				var className = contentBlockName.replace(/\./g, "");
+				$(contentBlockName).contents().find('[v65js="uploadFormArea"]').after('<a class="downloadMessage" href="https://dynavee.vin65.com/assets/images/contentblock/photos/bottles.png" download="'+className+'.png">'+className+' is almost complete... Click here to download the banner image, then upload it.</a>');
+				$(contentBlockName).css('width', '1000px');
+				$(contentBlockName).css('height', '1000px');
+				$(contentBlockName).contents().find("input[name='element2']").val("Our Wines");
+				$(contentBlockName).contents().find("textarea[name='element3']").val("Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.");
+				$(contentBlockName).contents().find("input[name='element4']").val("/Wines");
+			} else if( contentBlockName === ".homeFeatureImage" ) {
+				var className = contentBlockName.replace(/\./g, "");
+				$(contentBlockName).contents().find('[v65js="uploadFormArea"]').after('<a class="downloadMessage" href="https://skambee.vin65.com/assets/images/contentblock/photos/homepage-feature.jpg" download="'+className+'.jpg">'+className+' is almost complete... Click here to download the banner image, then upload it.</a>');
+				$(contentBlockName).css('width', '1000px');
+				$(contentBlockName).css('height', '1000px');
+			} else if( contentBlockName === ".pageFeatureImage" ) {
+				var className = contentBlockName.replace(/\./g, "");
+				$(contentBlockName).contents().find('[v65js="uploadFormArea"]').after('<a class="downloadMessage" href="https://skambee.vin65.com/assets/images/contentblock/photos/page-feature.jpg" download="'+className+'.jpg">'+className+' is almost complete... Click here to download the banner image, then upload it.</a>');
+				$(contentBlockName).css('width', '1000px');
+				$(contentBlockName).css('height', '1000px');
+			}
 			$(contentBlockName).contents().find('[v65js="submitEdit"]').trigger('click');
 			setTimeout(function() {
-				contentBlockInput.automation.completeMessage(contentBlockName, template);
+				if( contentBlockName !== ".About_Us" ) {
+					contentBlockInput.automation.completeMessage(contentBlockName, template);
+				}
 				$('.progress-bar').css('width', progress + '%');
 				$('.progress-bar').text(progress + '%');
 			}, 3000);
 		},
 		completeMessage : function(contentBlockName, template) {
-			var className = contentBlockName.replace(/\./g, "");
-			$( '<h2>'+className+' is complete</h2><button class="btn-warning" onclick="location.reload();">Click here to stop</button><br/>' ).insertAfter( ".progress" );
+			var className = contentBlockName.replace(/\./g, "").replace(/_/g, ' ');
+			if( contentBlockName === ".pageFeatureImage" ) {
+				$( '<h2>'+className+' is not complete</h2><p>Make sure to assign the content block to a page!</p>' ).insertAfter( ".progress" );
+			} else {
+				$( '<h2>'+className+' is complete</h2><button class="btn-warning" onclick="location.reload();">Click here to stop</button><br/>' ).insertAfter( ".progress" );
+			}
 		}
 	}
 };
