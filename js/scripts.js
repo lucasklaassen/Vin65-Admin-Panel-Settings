@@ -352,11 +352,11 @@ var contentGroupAutomation = {
 			} else if( contentGroupName === ".socialIcons" ) {
 				var text = '<a href="//Link//"><i class="icon-//Social Channel//"></i></a>';
 			} else if( contentGroupName === ".aboutUs" ) {
-				var text = '<div class="ctaLeft About"><h2>//Title//</h2><p>//Teaser//</p><p><a class="linkBtn" href="//Link//"><span>Learn More</span></a></p></div><div class="ctaRight"><img alt="//Photo//" src="//Photo//" /></div>';
+				var text = '<div class="ctaLeft About"><h2>//Title//</h2><p>//Teaser//</p><p><a class="linkBtn" href="//Link//"><span>Learn More</span></a></p></div><div class="ctaRight"><img alt="//banner//" src="//banner//" /></div>';
 			} else if( contentGroupName === ".events" ) {
 				var text = '<div class="v65Left Event"><div class="upperEvents"><div class="date"><p>//Month//</p><p><strong>//Date//</strong></p><p>//Year//</p></div><div class="eventName"><p><strong>//Event Title//</strong></p><p><i>//Location//</i></p><p>//Time//</p></div></div><div class="middleEvents"><p>//Teaser//</p></div><div class="lowerEvents"><a href="//Link//">Click to view this event +</a></div></div>';
 			} else if( contentGroupName === ".ourWines" ) {
-				var text = '<div class="ctaLeft"><img alt="//Photo//" src="//Photo//" /></div><div class="ctaRight Wines"><h2>//Title//</h2><p>//Teaser//</p><p><a class="linkBtn" href="//Link//"><span>Shop Now</span></a></p></div>';
+				var text = '<div class="ctaLeft"><img alt="//banner//" src="//banner//" /></div><div class="ctaRight Wines"><h2>//Title//</h2><p>//Teaser//</p><p><a class="linkBtn" href="//Link//"><span>Shop Now</span></a></p></div>';
 			}
 			$(contentGroupName).contents().find("[name='output']").val(text);
 			$(contentGroupName).contents().find("[v65js='submitEdit']").trigger('click');
